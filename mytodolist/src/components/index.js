@@ -2,7 +2,7 @@ import './styles.css'
 import React, { useState} from 'react';
 import Footer from './footer/Footer.js';
 
-const Initial_State =[
+const Initial_State =[   //The "Initial_State" is the initial value of the toDoList state.
   { id: 1, title: "Learn HTML,CSS, JavaScript", completed: true },
   { id: 2, title: "Learn React", completed: false},
   { id: 3, title: "Learn a new language", completed: false },
@@ -11,24 +11,26 @@ const Initial_State =[
   { id: 6, title: "Move to a new country", completed: false}
 ]
 
-function TodoList() {
+export default function TodoList() {
   const [todo, setTodo] = useState('');
-  //The "Initial_State" is the initial value of the toDoList state.
+  //"todo": a string that represents the user's input for a new todo item.
   const [toDoList, setToDoList] = useState(Initial_State);
-  //"filterStatus" variable can be used to filter the to-do items based on a certain status chosen by the user.
+  //"toDoList": an array of objects representing the list of todo items, where each object has an "id", a "title" string, and a "completed" boolean.
+  //"filterStatus": a boolean value that is used to filter the todo list based on whether items are completed or not.
   const [filterStatus, setFilterStatus] = useState(null);
   //
   const [idToEdit, setIdToEdit] = useState(0);
   const [nameToEdit, setNameToEdit] = useState('');
+  //"idToEdit" and "nameToEdit": variables that are used to edit the title of an existing todo item.
 
 
-  const handleChange = event => {
+  //The "handleChange" function is used to update the todo state when the user types in the input field.
+  const handleChange = (event) => { 
     setTodo(event.target.value);
   };
 
-  //The function, named handleSubmit, takes an event parameter. Firstly, it calls the event.preventDefault() method to prevent the page from being refreshed.
-  //This code snippet can be used to add a new item to a todo list when a form is submitted or the Enter key is pressed.
-  //setTodo('') is used to update the todo variable with an empty value, clearing the input field.
+  //The "handleSubmit" function is used to add a new item to the todo list when the form is submitted or the Enter key is pressed. It prevents the page from being refreshed using" event.preventDefault()", checks if the input is empty, creates a new object with a unique "id", sets the completed property to "false", and adds the new object to the "toDoList" array using the "setToDoList" function.
+  //"setTodo('')" is used to update the todo variable with an empty value, clearing the input field.
   const handleSubmit = (event) => {
 
     event.preventDefault();
@@ -41,9 +43,8 @@ function TodoList() {
     setTodo('');
   };
 
-  //Firstly, a .map() method is called on the elements in the toDoList array.
-  //This method creates a new array called updateToDoList and performs an operation for each item.
-  //This code snippet can be used to determine whether an item in a todo list has been completed or not, and to update the state of the toDoList array when an item's completion status changes.
+
+  //The "handleCompleted" function is used to update the "completed" property of a todo item when the checkbox is checked or unchecked. It uses the "map" method to create a new array of todo items with the updated completed property and updates the "toDoList" state using "setToDoList".
   function handleCompleted(event, id) {
     const updateToDoList = toDoList.map(item => {
       if(item.id === id){
@@ -60,27 +61,30 @@ function TodoList() {
     setToDoList(updateToDoList);
   };
 
-  //This code snippet can be used to remove a specific item from a todo list and update the state of the toDoList array.
+  //The "removeItem" function is used to remove a specific item from the "toDolist". It uses the "filter" method to create a new array without the item and updates the "toDoList" state using "setToDoList".
   function removeItem(id){
     setToDoList(toDoList.filter(x=>x.id !== id));
   }
 
-  //This code snippet can be used to remove completed items from a todo list and update the state of the toDoList array.
+  //The "clearCompleted" function is used to remove all completed items from the todo list. It uses the "filter" method to create a new array without the completed items and updates the "toDoList" state using "setToDoList".
   function clearCompleted(){
     setToDoList(toDoList.filter(x=>x.completed === false));
   }
 
+  //The "toggleAll" function is used to toggle the "filterStatus" state between "null" and "999", which are used to show all items or only completed items respectively.
   function toggleAll(event)
   {
     setFilterStatus(event.target.checked ? null : 999);
   }
 
+  //The "updateIdToEdit" function is used to set the "idToEdit" and "nameToEdit" states when an item is clicked for editing. It finds the title of the item with the given id and updates the "nameToEdit" state with it.
   function updateIdToEdit(id)
   {
     setIdToEdit(id);
     setNameToEdit(toDoList.find(x=>x.id === id).title);
   }
 
+  //The "handleEdit" function is used to update the title property of an existing item when the user types in the edit input field. It uses the "map" method to create a new array of todo items with the updated title property and updates the "toDoList" state using "setToDoList".
   function handleEdit (event,id) {
     setNameToEdit(event.target.value);
 
@@ -141,5 +145,3 @@ function TodoList() {
     </section>
   );
 }
-
-export default TodoList;
